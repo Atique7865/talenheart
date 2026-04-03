@@ -12,6 +12,12 @@ services:
       - mongo_data:/data/db
     networks:
       - talentheart_net
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')", "--quiet"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
 
   # Flask Backend
   flask:
@@ -26,7 +32,8 @@ services:
     volumes:
       - uploads_data:/app/backend/static/uploads
     depends_on:
-      - mongo
+      mongo:
+        condition: service_healthy
     networks:
       - talentheart_net
 

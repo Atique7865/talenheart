@@ -1,12 +1,11 @@
 from flask import Flask
-from flask_pymongo import PyMongo
 from flask_cors import CORS
 from dotenv import load_dotenv
+from extensions import mongo
 import os
 
 load_dotenv()
 
-mongo = PyMongo()
 
 def create_app():
     app = Flask(__name__, static_folder="../frontend", static_url_path="")
@@ -35,8 +34,6 @@ def create_app():
 
 
 def seed_data():
-    from app import mongo
-
     if mongo.db.jobs.count_documents({}) == 0:
         sample_jobs = [
             {

@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template_string, request, jsonify, session, redirect, url_for
-from app import mongo
+from extensions import mongo
 from bson import ObjectId
 import os
 

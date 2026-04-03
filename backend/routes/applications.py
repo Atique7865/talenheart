@@ -1,5 +1,5 @@
 from flask import Blueprint, jsonify, request
-from app import mongo
+from extensions import mongo
 from bson import ObjectId
 import os
 from werkzeug.utils import secure_filename
