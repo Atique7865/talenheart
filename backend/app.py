@@ -21,12 +21,14 @@ def create_app():
     from routes.admin import admin_bp
     from routes.pages import pages_bp
     from routes.success_stories import stories_bp
+    from routes.contact import contact_bp
 
     app.register_blueprint(pages_bp)
     app.register_blueprint(jobs_bp, url_prefix="/api/jobs")
     app.register_blueprint(applications_bp, url_prefix="/api/applications")
     app.register_blueprint(admin_bp, url_prefix="/admin")
     app.register_blueprint(stories_bp, url_prefix="/api/success-stories")
+    app.register_blueprint(contact_bp, url_prefix="/api/contact")
 
     # Seed sample data on first run
     with app.app_context():

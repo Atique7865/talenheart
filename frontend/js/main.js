@@ -245,13 +245,33 @@ function resetQuiz() {
 function initContactForm() {
   const form = document.getElementById("contact-form");
   if (!form) return;
-  form.addEventListener("submit", e => {
+  form.addEventListener("submit", async e => {
     e.preventDefault();
     const btn = form.querySelector("[type=submit]");
     btn.disabled = true;
-    setTimeout(() => {
-      form.innerHTML = `<div class="text-center py-4"><div class="fs-1">✅</div><h4 class="fw-bold mt-2">Message Sent!</h4><p class="text-muted">We'll get back to you within 24 hours.</p></div>`;
-    }, 800);
+    btn.innerHTML = `<span class="spinner-border spinner-border-sm me-2"></span>Sending...`;
+    try {
+      const fd = new FormData(form);
+      const body = {};
+      fd.forEach((v, k) => { body[k] = v; });
+      const res = await fetch(`${API}/api/contact/`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body)
+      });
+      const data = await res.json();
+      if (res.ok) {
+        form.innerHTML = `<div class="text-center py-4"><div class="fs-1">✅</div><h4 class="fw-bold mt-2">Message Sent!</h4><p class="text-muted">We'll get back to you within 24 hours.</p></div>`;
+      } else {
+        alert("Error: " + (data.error || "Submission failed"));
+        btn.disabled = false;
+        btn.innerHTML = "Send Message ✉️";
+      }
+    } catch (err) {
+      alert("Network error. Please try again.");
+      btn.disabled = false;
+      btn.innerHTML = "Send Message ✉️";
+    }
   });
 }
 
