@@ -47,7 +47,10 @@ def dashboard():
     jobs = list(mongo.db.jobs.find())
     for j in jobs:
         j["_id"] = str(j["_id"])
-    return render_dashboard(total_jobs, total_apps, pending, accepted, recent_apps, jobs)
+    stories = list(mongo.db.success_stories.find().sort("year", -1))
+    for s in stories:
+        s["_id"] = str(s["_id"])
+    return render_dashboard(total_jobs, total_apps, pending, accepted, recent_apps, jobs, stories)
 
 
 @admin_bp.route("/jobs/delete/<job_id>", methods=["POST"])
@@ -63,6 +66,28 @@ def change_status(app_id):
     new_status = request.form.get("status")
     mongo.db.applications.update_one({"_id": ObjectId(app_id)}, {"$set": {"status": new_status}})
     return redirect(url_for("admin.dashboard"))
+
+
+@admin_bp.route("/success-stories/add", methods=["POST"])
+@require_admin
+def add_story():
+    story = {
+        "name": request.form.get("name", "").strip(),
+        "country": request.form.get("country", "").strip(),
+        "job": request.form.get("job", "").strip(),
+        "salary": request.form.get("salary", "").strip(),
+        "story": request.form.get("story", "").strip(),
+        "year": int(request.form.get("year", 2024)),
+    }
+    mongo.db.success_stories.insert_one(story)
+    return redirect(url_for("admin.dashboard") + "#stories")
+
+
+@admin_bp.route("/success-stories/delete/<story_id>", methods=["POST"])
+@require_admin
+def delete_story(story_id):
+    mongo.db.success_stories.delete_one({"_id": ObjectId(story_id)})
+    return redirect(url_for("admin.dashboard") + "#stories")
 
 
 def render_admin_login(error=None):
@@ -94,7 +119,7 @@ def render_admin_login(error=None):
     return render_template_string(html, error=error)
 
 
-def render_dashboard(total_jobs, total_apps, pending, accepted, recent_apps, jobs):
+def render_dashboard(total_jobs, total_apps, pending, accepted, recent_apps, jobs, stories):
     html = """
 <!DOCTYPE html>
 <html>
@@ -193,9 +218,82 @@ def render_dashboard(total_jobs, total_apps, pending, accepted, recent_apps, job
     </div>
   </div>
 
+  <!-- Add Success Story -->
+  <div class="card border-0 shadow-sm rounded-4 mt-4" id="stories">
+    <div class="card-header bg-white fw-bold fs-5 rounded-top-4">⭐ Add Success Story</div>
+    <div class="card-body">
+      <form method="POST" action="/admin/success-stories/add">
+        <div class="row g-3">
+          <div class="col-md-6">
+            <label class="form-label fw-semibold">Full Name</label>
+            <input type="text" name="name" class="form-control" placeholder="e.g. Md. Rahim Uddin" required>
+          </div>
+          <div class="col-md-6">
+            <label class="form-label fw-semibold">Country (with emoji flag)</label>
+            <input type="text" name="country" class="form-control" placeholder="e.g. Japan 🇯🇵" required>
+          </div>
+          <div class="col-md-4">
+            <label class="form-label fw-semibold">Job Title</label>
+            <input type="text" name="job" class="form-control" placeholder="e.g. Factory Worker" required>
+          </div>
+          <div class="col-md-4">
+            <label class="form-label fw-semibold">Monthly Salary</label>
+            <input type="text" name="salary" class="form-control" placeholder="e.g. ¥185,000/month" required>
+          </div>
+          <div class="col-md-4">
+            <label class="form-label fw-semibold">Year Placed</label>
+            <input type="number" name="year" class="form-control" placeholder="2024" min="2000" max="2099" required>
+          </div>
+          <div class="col-12">
+            <label class="form-label fw-semibold">Story / Testimonial</label>
+            <textarea name="story" class="form-control" rows="3" placeholder="Write the worker's testimonial here..." required></textarea>
+          </div>
+          <div class="col-12">
+            <button type="submit" class="btn btn-danger px-4">➕ Add Story</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Success Stories List -->
+  <div class="card border-0 shadow-sm rounded-4 mt-4 mb-4">
+    <div class="card-header bg-white fw-bold fs-5 rounded-top-4">⭐ Published Stories ({{ stories|length }})</div>
+    <div class="card-body p-0">
+      {% if stories %}
+      <div class="table-responsive">
+      <table class="table table-hover mb-0">
+        <thead class="table-light"><tr>
+          <th>Name</th><th>Country</th><th>Job</th><th>Salary</th><th>Year</th><th>Story Preview</th><th>Action</th>
+        </tr></thead>
+        <tbody>
+        {% for s in stories %}
+        <tr>
+          <td class="fw-semibold">{{ s.name }}</td>
+          <td>{{ s.country }}</td>
+          <td>{{ s.job }}</td>
+          <td>{{ s.salary }}</td>
+          <td>{{ s.year }}</td>
+          <td><span class="text-muted small">{{ s.story | truncate(70) }}</span></td>
+          <td>
+            <form method="POST" action="/admin/success-stories/delete/{{ s._id }}" onsubmit="return confirm('Delete this story?')">
+              <button class="btn btn-sm btn-outline-danger">Delete</button>
+            </form>
+          </td>
+        </tr>
+        {% endfor %}
+        </tbody>
+      </table>
+      </div>
+      {% else %}
+      <div class="p-4 text-muted">No success stories yet. Add one above.</div>
+      {% endif %}
+    </div>
+  </div>
+
 </div>
 </body></html>"""
     from flask import render_template_string
     return render_template_string(html, total_jobs=total_jobs, total_apps=total_apps,
                                   pending=pending, accepted=accepted,
-                                  recent_apps=recent_apps, jobs=jobs)
+                                  recent_apps=recent_apps, jobs=jobs, stories=stories)
