@@ -1,0 +1,131 @@
+/* =====================================================
+   TalentHeart Limited – Main Stylesheet
+   ===================================================== */
+
+:root {
+  --primary: #c0392b;
+  --primary-dark: #96281b;
+  --primary-light: #e74c3c;
+  --gold: #f39c12;
+  --dark: #1a1a2e;
+  --text-dark: #2c3e50;
+  --bg-light: #f8f9fa;
+}
+
+* { scroll-behavior: smooth; }
+body { font-family: 'Inter', 'Segoe UI', sans-serif; color: var(--text-dark); overflow-x: hidden; }
+
+/* ---- Navbar ---- */
+.navbar-brand img { height: 42px; }
+.navbar { backdrop-filter: blur(10px); background: rgba(26,26,46,0.97) !important; }
+.navbar .nav-link { color: rgba(255,255,255,0.85) !important; font-weight: 500; transition: color .2s; }
+.navbar .nav-link:hover, .navbar .nav-link.active { color: #fff !important; }
+.btn-apply-nav { background: var(--primary); color: #fff !important; border-radius: 25px; padding: 6px 22px !important; }
+.btn-apply-nav:hover { background: var(--primary-dark); }
+
+/* ---- Hero ---- */
+.hero-section {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+  position: relative; overflow: hidden;
+  display: flex; align-items: center;
+}
+.hero-section::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+  background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="20" cy="20" r="1" fill="rgba(255,255,255,0.05)"/><circle cx="80" cy="40" r="1.5" fill="rgba(255,255,255,0.05)"/><circle cx="50" cy="80" r="1" fill="rgba(255,255,255,0.05)"/><circle cx="10" cy="60" r="2" fill="rgba(255,255,255,0.03)"/><circle cx="90" cy="90" r="1.5" fill="rgba(255,255,255,0.03)"/></svg>') repeat;
+  background-size: 150px;
+}
+.hero-badge { background: rgba(192,57,43,0.2); border: 1px solid rgba(192,57,43,0.4); color: #ff6b6b; border-radius: 25px; padding: 6px 18px; display: inline-block; font-size: 14px; }
+.hero-title { font-size: clamp(2.2rem, 5vw, 3.8rem); font-weight: 800; line-height: 1.15; }
+.hero-highlight { color: var(--primary-light); }
+.hero-stats { background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.12); border-radius: 16px; padding: 20px 30px; }
+.hero-stat-num { font-size: 2rem; font-weight: 800; color: #fff; }
+.hero-stat-label { font-size: 0.8rem; color: rgba(255,255,255,0.6); }
+.hero-img-card { background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); border-radius: 20px; padding: 30px; }
+
+/* ---- Section Titles ---- */
+.section-badge { background: rgba(192,57,43,0.1); color: var(--primary); border-radius: 20px; padding: 4px 16px; font-size: 13px; font-weight: 600; display: inline-block; }
+.section-title { font-size: clamp(1.8rem, 3.5vw, 2.6rem); font-weight: 800; }
+.title-underline { width: 60px; height: 4px; background: var(--primary); border-radius: 2px; }
+
+/* ---- Cards ---- */
+.feature-card { background: #fff; border-radius: 20px; padding: 30px; border: 1px solid #eee; transition: transform .3s, box-shadow .3s; }
+.feature-card:hover { transform: translateY(-8px); box-shadow: 0 20px 50px rgba(0,0,0,0.1); }
+.feature-icon { width: 64px; height: 64px; background: rgba(192,57,43,0.1); border-radius: 16px; display: flex; align-items: center; justify-content: center; font-size: 28px; }
+
+.country-card { border-radius: 24px; overflow: hidden; border: none; transition: transform .3s, box-shadow .3s; }
+.country-card:hover { transform: translateY(-10px); box-shadow: 0 25px 60px rgba(0,0,0,0.15); }
+.country-card .card-img-overlay-custom { background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, transparent 60%); }
+.country-flag { font-size: 3.5rem; }
+
+.job-card { border-radius: 16px; border: 1.5px solid #eee; transition: all .3s; background: #fff; }
+.job-card:hover { border-color: var(--primary); box-shadow: 0 10px 30px rgba(192,57,43,0.12); transform: translateY(-4px); }
+.job-badge { font-size: 11px; font-weight: 600; border-radius: 20px; padding: 3px 12px; }
+.salary-text { font-size: 1.1rem; font-weight: 700; color: var(--primary); }
+
+.story-card { border-radius: 20px; border: none; background: #fff; box-shadow: 0 4px 20px rgba(0,0,0,0.06); overflow: hidden; transition: transform .3s; }
+.story-card:hover { transform: translateY(-6px); }
+.story-avatar { width: 70px; height: 70px; border-radius: 50%; object-fit: cover; border: 3px solid var(--primary); }
+.story-avatar-placeholder { width: 70px; height: 70px; border-radius: 50%; background: var(--primary); display: flex; align-items: center; justify-content: center; font-size: 1.8rem; color: #fff; border: 3px solid var(--primary-light); }
+.quote-icon { font-size: 3rem; color: rgba(192,57,43,0.15); line-height: 1; }
+
+/* ---- Process Steps ---- */
+.step-circle { width: 56px; height: 56px; border-radius: 50%; background: var(--primary); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; font-weight: 800; flex-shrink: 0; }
+.step-line { width: 2px; background: rgba(192,57,43,0.2); flex: 1; min-height: 40px; }
+
+/* ---- Forms ---- */
+.form-control, .form-select { border-radius: 10px; border: 1.5px solid #ddd; padding: 12px 16px; font-size: 0.95rem; }
+.form-control:focus, .form-select:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(192,57,43,0.12); }
+.btn-primary-th { background: var(--primary); border: none; border-radius: 12px; color: #fff; padding: 14px 40px; font-weight: 700; font-size: 1rem; transition: all .3s; }
+.btn-primary-th:hover { background: var(--primary-dark); transform: translateY(-2px); box-shadow: 0 8px 25px rgba(192,57,43,0.35); color: #fff; }
+
+/* ---- Salary Calculator ---- */
+.calc-section { background: linear-gradient(135deg, #1a1a2e, #16213e); color: #fff; }
+.calc-card { background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); border-radius: 20px; }
+.calc-result { background: rgba(192,57,43,0.2); border: 1px solid rgba(192,57,43,0.4); border-radius: 14px; }
+
+/* ---- Eligibility Quiz ---- */
+.quiz-section { background: var(--bg-light); }
+.quiz-option { cursor: pointer; border: 2px solid #e0e0e0; border-radius: 12px; padding: 14px 20px; transition: all .2s; }
+.quiz-option:hover, .quiz-option.selected { border-color: var(--primary); background: rgba(192,57,43,0.06); }
+.quiz-progress { height: 6px; border-radius: 3px; background: #eee; }
+.quiz-progress-fill { height: 100%; border-radius: 3px; background: var(--primary); transition: width .4s; }
+
+/* ---- Floating WhatsApp ---- */
+.whatsapp-float { position: fixed; bottom: 28px; right: 28px; z-index: 9999; }
+.whatsapp-btn { width: 60px; height: 60px; background: #25D366; border-radius: 50%; display: flex; align-items: center; justify-content: center; text-decoration: none; box-shadow: 0 6px 24px rgba(37,211,102,0.5); transition: transform .3s; animation: pulse-green 2s infinite; }
+.whatsapp-btn:hover { transform: scale(1.1); }
+.whatsapp-btn svg { width: 30px; height: 30px; fill: #fff; }
+@keyframes pulse-green {
+  0%, 100% { box-shadow: 0 6px 24px rgba(37,211,102,0.5); }
+  50% { box-shadow: 0 6px 40px rgba(37,211,102,0.8); }
+}
+.whatsapp-tooltip { position: absolute; right: 70px; top: 50%; transform: translateY(-50%); background: #333; color: #fff; border-radius: 8px; padding: 6px 12px; font-size: 13px; white-space: nowrap; opacity: 0; transition: opacity .2s; pointer-events: none; }
+.whatsapp-float:hover .whatsapp-tooltip { opacity: 1; }
+
+/* ---- Footer ---- */
+.footer { background: var(--dark); color: rgba(255,255,255,0.75); }
+.footer h5, .footer .footer-brand { color: #fff; }
+.footer a { color: rgba(255,255,255,0.65); text-decoration: none; transition: color .2s; }
+.footer a:hover { color: var(--primary-light); }
+.footer-divider { border-color: rgba(255,255,255,0.1); }
+.social-icon { width: 38px; height: 38px; border-radius: 50%; background: rgba(255,255,255,0.1); display: inline-flex; align-items: center; justify-content: center; transition: background .2s; }
+.social-icon:hover { background: var(--primary); }
+
+/* ---- Page Hero (inner pages) ---- */
+.page-hero { background: linear-gradient(135deg, #1a1a2e, #0f3460); color: #fff; padding: 100px 0 60px; }
+
+/* ---- Country detail tabs ---- */
+.country-tab { border-radius: 12px 12px 0 0; border: 2px solid #eee; border-bottom: none; }
+.nav-pills .nav-link.active { background: var(--primary); }
+.nav-pills .nav-link { color: var(--text-dark); font-weight: 600; }
+
+/* ---- Animations ---- */
+.fade-up { opacity: 0; transform: translateY(30px); transition: opacity .6s, transform .6s; }
+.fade-up.visible { opacity: 1; transform: none; }
+
+/* ---- Responsive ---- */
+@media (max-width: 768px) {
+  .hero-stats { margin-top: 30px; }
+}
